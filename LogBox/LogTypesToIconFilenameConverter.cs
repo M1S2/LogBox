@@ -7,6 +7,9 @@ using System.Windows.Data;
 
 namespace LogBox
 {
+    /// <summary>
+    /// Convert LogTypes enum values to icon filenames that can be used to display icons in an image control
+    /// </summary>
     [ValueConversion(typeof(LogTypes), typeof(string))]
     public class LogTypesToIconFilenameConverter : IValueConverter
     {

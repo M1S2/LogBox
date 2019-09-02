@@ -14,12 +14,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
-namespace LogBox
+namespace GitReleaseTool_WPF
 {
     /// <summary>
-    /// Interaktionslogik für LogBoxControl.xaml
+    /// Interaktionslogik für LogBox.xaml
     /// </summary>
-    public partial class LogBoxControl : UserControl
+    public partial class LogBox : UserControl
     {
         /// <summary>
         /// List with all log events
@@ -75,7 +75,7 @@ namespace LogBox
 
         //***********************************************************************************************************************************************************************************************************
 
-        public LogBoxControl()
+        public LogBox()
         {
             InitializeComponent();
             DataContext = this;
@@ -136,25 +136,8 @@ namespace LogBox
         {
             ShownLogEvents = new ObservableCollection<LogEvent>(LogEvents.Where(log => (ShowInfos == true && log.LogType == LogTypes.INFO) || (ShowWarnings == true && log.LogType == LogTypes.WARNING) || (ShowErrors == true && log.LogType == LogTypes.ERROR)));
             listView_Log.ItemsSource = ShownLogEvents;
-            resizeListViewColumns(listView_Log);
+            Tools.ResizeListViewColumns(listView_Log);
         }
 
-        //***********************************************************************************************************************************************************************************************************
-
-        /// <summary>
-        /// Autosize the columns of the listView_Log
-        /// </summary>
-        /// see: https://dotnet-snippets.de/snippet/automatische-anpassung-der-breite-von-gridviewcolumns/1286
-        public void resizeListViewColumns(ListView listView)
-        {
-            GridView gridView = listView.View as GridView;
-            if (gridView == null) { return; }
-
-            foreach (GridViewColumn column in gridView.Columns)
-            {
-                column.Width = column.ActualWidth;
-                column.Width = double.NaN;
-            }
-        }
     }
 }

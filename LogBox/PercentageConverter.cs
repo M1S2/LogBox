@@ -9,7 +9,11 @@ using System.Windows.Markup;
 
 namespace LogBox
 {
+    /// <summary>
+    /// Multiply a value with a factor. This can be used for example as converter in xaml to use only half the width (factor 0.5) of a control.
+    /// </summary>
     // see: https://stackoverflow.com/questions/20326744/wpf-binding-width-to-parent-width0-3
+    [ValueConversion(typeof(double), typeof(double))]
     public class PercentageConverter : MarkupExtension, IValueConverter
     {
         private static PercentageConverter _instance;
