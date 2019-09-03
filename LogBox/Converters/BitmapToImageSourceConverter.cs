@@ -19,11 +19,12 @@ namespace LogBox
         // see: https://stackoverflow.com/questions/22499407/how-to-display-a-bitmap-in-a-wpf-image
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            Bitmap bitmap = (Bitmap)value;
-            if(bitmap == null) { return null; }
+            if (value == null) { return null; }
+            Bitmap bitmap = (Bitmap)((Bitmap)value).Clone();
+            bitmap.MakeTransparent(Color.White);
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                 memory.Position = 0;
                 BitmapImage bitmapimage = new BitmapImage();
                 bitmapimage.BeginInit();

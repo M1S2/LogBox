@@ -24,7 +24,7 @@ namespace LogBox
         /// <param name="logImage">Image of log entry</param>
         public LogEventImage(string logMessage, Bitmap logImage) : base(LogTypes.IMAGE, logMessage)
         {
-            LogImage = logImage;
+            LogImage = (Bitmap)logImage.Clone();
         }
     }
 }

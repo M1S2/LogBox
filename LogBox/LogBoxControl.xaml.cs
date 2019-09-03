@@ -142,6 +142,23 @@ namespace LogBox
 
         //***********************************************************************************************************************************************************************************************************
 
+        private bool _autoScrollToLastLogEntry;
+        /// <summary>
+        /// Automatically scroll to the last log entry
+        /// </summary>
+        public bool AutoScrollToLastLogEntry
+        {
+            get { return _autoScrollToLastLogEntry; }
+            set
+            {
+                _autoScrollToLastLogEntry = value;
+                NotifyPropertyChanged();
+                ScrollToLastLogEvent();
+            }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
         public LogBoxControl()
         {
             InitializeComponent();
@@ -156,6 +173,7 @@ namespace LogBox
             ShowWarnings = true;
             ShowErrors = true;
             ShowImageLogs = true;
+            AutoScrollToLastLogEntry = true;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -215,6 +233,7 @@ namespace LogBox
         public void LogEvent(LogEvent logEvent)
         {
             LogEvents.Add(logEvent);
+            if (AutoScrollToLastLogEntry) { ScrollToLastLogEvent(); }
         }
 
         /// <summary>
@@ -232,6 +251,15 @@ namespace LogBox
         public void ScrollToSpecificLogEvent(LogEvent logEvent)
         {
             listView_Log.ScrollIntoView(logEvent);
+        }
+
+        /// <summary>
+        /// Scroll to the last (newest) log event
+        /// </summary>
+        public void ScrollToLastLogEvent()
+        {
+            if (LogEvents.Count == 0) { return; }
+            listView_Log.ScrollIntoView(LogEvents.Last());
         }
 
         //***********************************************************************************************************************************************************************************************************

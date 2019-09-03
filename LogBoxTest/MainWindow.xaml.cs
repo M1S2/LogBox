@@ -26,7 +26,16 @@ namespace LogBoxTest
             logBoxCtrl.LogEvent(new LogBox.LogEventInfo("Info log message"));
             logBoxCtrl.LogEvent(new LogBox.LogEventWarning("Warning log message"));
             logBoxCtrl.LogEvent(new LogBox.LogEventError("Error log message"));
-            logBoxCtrl.LogEvent(new LogBox.LogEventImage("Image log message", new System.Drawing.Bitmap(100, 100)));
+
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(100, 100);
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
+            g.Clear(System.Drawing.Color.Green);
+            logBoxCtrl.LogEvent(new LogBox.LogEventImage("Image log message", bmp));
+
+            for (int i = 0; i < 20; i++)
+            {
+                logBoxCtrl.LogEvent(new LogBox.LogEventInfo("Info log #" + i.ToString()));
+            }
         }
     }
 }
