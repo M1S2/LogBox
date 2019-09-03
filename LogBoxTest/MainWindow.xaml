@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:LogBoxTest"
         xmlns:logBox="clr-namespace:LogBox;assembly=LogBox"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Test LogBox" Height="450" Width="700"
+        Icon="Resources/LogIcon.ico">
+    
     <Grid>
         <logBox:LogBoxControl x:Name="logBoxCtrl"/>
     </Grid>

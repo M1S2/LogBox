@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LogBox</id>
+    <version>$version$</version>
+    <title>LogBox</title>
+    <authors>M1S2</authors>
+    <owners>M1S2</owners>
+    <projectUrl>https://github.com/M1S2/LogBox</projectUrl>
+    <iconUrl>https://github.com/M1S2/LogBox/raw/master/AppIcon/LogIcon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A WPF control to display log events.</description>
+    <releaseNotes>Release %version%</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>log debug wpf</tags>
+  </metadata>
+</package>
