@@ -5,12 +5,13 @@ Version: %version%
 A WPF control to display log events.
 
 Available types of log events are:
-| Type  |Description                                                            | 
-|-------|-----------------------------------------------------------------------|
-|Info   |Use this to show informations.                                         |
-|Warning|Use this to show warning.                                              |
-|Error  |Use this to show errors.                                               |
-|Image  |Use this to display image to the user (for example for debug purpose). |
+
+| Type    | Description                                                            | 
+| ------- | ---------------------------------------------------------------------- |
+| Info    | Use this to show informations.                                         |
+| Warning | Use this to show warning.                                              |
+| Error   | Use this to show errors.                                               |
+| Image   | Use this to display image to the user (for example for debug purpose). |
 
 ## Installation
 Include the [latest release from nuget.org](https://www.nuget.org/packages/LogBox/) in your project.
@@ -37,7 +38,7 @@ For further examples see the LogBoxTest project.
 
 ## Screenshots
 
-![LogBox screenshot](LogBoxTest\Screenshots\Screenshot_LogBox.png)
+![LogBox screenshot](LogBoxTest/Screenshots/Screenshot_LogBox.png)
 
 ## App Icon
 Icon made by Flat Icons from www.flaticon.com
