@@ -23,6 +23,8 @@ namespace LogBox
                     return "/LogBox;component/Resources/Warning.png";
                 case LogTypes.ERROR:
                     return "/LogBox;component/Resources/Error.png";
+                case LogTypes.IMAGE:
+                    return "/LogBox;component/Resources/Image.png";
                 default:
                     return null;
             }

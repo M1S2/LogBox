@@ -23,9 +23,10 @@ namespace LogBoxTest
         public MainWindow()
         {
             InitializeComponent();
-            logBoxCtrl.LogEvent(LogBox.LogTypes.INFO, "Info log message");
-            logBoxCtrl.LogEvent(LogBox.LogTypes.WARNING, "Warning log message");
-            logBoxCtrl.LogEvent(LogBox.LogTypes.ERROR, "Error log message");
+            logBoxCtrl.LogEvent(new LogBox.LogEventInfo("Info log message"));
+            logBoxCtrl.LogEvent(new LogBox.LogEventWarning("Warning log message"));
+            logBoxCtrl.LogEvent(new LogBox.LogEventError("Error log message"));
+            logBoxCtrl.LogEvent(new LogBox.LogEventImage("Image log message", new System.Drawing.Bitmap(100, 100)));
         }
     }
 }

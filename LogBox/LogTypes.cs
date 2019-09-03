@@ -24,6 +24,11 @@ namespace LogBox
         /// <summary>
         /// Log errors
         /// </summary>
-        ERROR
+        ERROR, 
+
+        /// <summary>
+        /// Log image
+        /// </summary>
+        IMAGE
     }
 }
