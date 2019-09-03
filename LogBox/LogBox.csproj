@@ -38,8 +38,8 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy "$(SolutionDir)README.md" "$(TargetDir)README.md"
+copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
