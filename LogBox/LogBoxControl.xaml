@@ -4,43 +4,48 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogBox"
+             xmlns:MetroControls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <local:LogTypesToIconFilenameConverter x:Key="IconConverter"/>
-        <local:BitmapToImageSourceConverter x:Key="BitmapConverter"/>
-        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter"/>
+        <ResourceDictionary>
+            <local:LogTypesToIconGeometryConverter x:Key="IconConverter"/>
+            <local:BitmapToImageSourceConverter x:Key="BitmapConverter"/>
+            <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ToggleSwitch.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <Image Source="/LogBox;component/Resources/Info.png" Margin="2,2,2,2"/>
-            <local:ToggleSwitch Width="50" Height="20" Margin="2,0,15,0" ToolTip="Show infos" IsChecked="{Binding ShowInfos}"/>
+            <iconPacks:PackIconModern Width="30" Height="30" Kind="InformationCircle" Foreground="Blue" VerticalAlignment="Center"/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show infos" IsChecked="{Binding ShowInfos}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-            <Image Source="/LogBox;component/Resources/Warning.png" Margin="2,2,2,2"/>
-            <local:ToggleSwitch Width="50" Height="20" Margin="2,0,15,0" ToolTip="Show warnings" IsChecked="{Binding ShowWarnings}"/>
+            <iconPacks:PackIconModern Width="30" Height="30" Kind="Warning" Foreground="#FFE4E44C" VerticalAlignment="Center" BorderBrush="#FFE4E44C"/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show warnings" IsChecked="{Binding ShowWarnings}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-            <Image Source="/LogBox;component/Resources/Error.png" Margin="2,2,2,2"/>
-            <local:ToggleSwitch Width="50" Height="20" Margin="2,0,15,0" ToolTip="Show errors" IsChecked="{Binding ShowErrors}"/>
+            <iconPacks:PackIconEntypo Width="30" Height="30" Kind="CircleWithCross" Foreground="Red" VerticalAlignment="Center"/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show errors" IsChecked="{Binding ShowErrors}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-            <Image Source="/LogBox;component/Resources/Image.png" Margin="2,2,2,2"/>
-            <local:ToggleSwitch Width="50" Height="20" Margin="2,0,15,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}"/>
+            <iconPacks:PackIconModern Width="30" Height="30" Kind="Image" Foreground="Gray" VerticalAlignment="Center"/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Image Source="/LogBox;component/Resources/Scrollbar_16x.png" Margin="2,2,2,2"/>
-                <local:ToggleSwitch Width="50" Height="20" Margin="2,0,15,0" ToolTip="Auto scroll to last log entry" IsChecked="{Binding AutoScrollToLastLogEntry}"/>
+                <iconPacks:PackIconFontAwesome Width="30" Height="30" Kind="ArrowsAltVSolid" Foreground="Gray" VerticalAlignment="Center" />
+                <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Auto scroll to last log entry" IsChecked="{Binding AutoScrollToLastLogEntry}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-                <Button x:Name="btn_clearLog" Margin="5,2,5,2" Click="btn_clearLog_Click" ToolTip="Clear all log entries">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="16" Source="/LogBox;component/Resources/Clear.png"/>
-                        <Label Content="Clear Log" Margin="0,-5"/>
-                    </StackPanel>
+                <Button x:Name="btn_clearLog" Width="35" Height="35" Margin="2,2,10,2" Click="btn_clearLog_Click" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="Gray" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
         </DockPanel>
@@ -59,7 +64,11 @@
                         <GridViewColumn Header="" Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image Source="{Binding LogType, Converter={StaticResource IconConverter}}" Height="20" Width="20" ToolTip="{Binding LogType}"/>
+                                    <Image Width="20" Margin="2" ToolTip="{Binding LogType}">
+                                        <Image.Source>
+                                            <DrawingImage Drawing="{Binding LogType, Converter={StaticResource IconConverter}}"/>
+                                        </Image.Source>
+                                    </Image>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
