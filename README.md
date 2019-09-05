@@ -1,7 +1,7 @@
 # LogBox
 
 [![nuget](https://img.shields.io/nuget/v/LogBox.svg)](https://www.nuget.org/packages/LogBox/)
-![GitHub](https://img.shields.io/github/license/M1S2/LogBox)
+[![GitHub](https://img.shields.io/github/license/M1S2/LogBox)](LICENSE.md)
 
 A WPF control to display log events.
 
