@@ -14,6 +14,9 @@
     <VersionFile>
       <Path>/CHANGELOG.md</Path>
     </VersionFile>
+    <VersionFile>
+      <Path>/README.md</Path>
+    </VersionFile>
   </VersionFiles>
   <BinaryObjects>
     <BinaryObject xsi:type="BinaryFolder">
