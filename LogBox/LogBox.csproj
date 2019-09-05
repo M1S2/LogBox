@@ -85,16 +85,14 @@ copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
     <Compile Include="ColumnDefinitionExtended.cs" />
     <Compile Include="Converters\BitmapToImageSourceConverter.cs" />
     <Compile Include="Converters\LogTypesToIconGeometryConverter.cs" />
-    <Compile Include="Converters\PercentageConverter.cs" />
-    <Compile Include="Converters\SubtractConverter.cs" />
     <Compile Include="LogBoxControl.xaml.cs">
       <DependentUpon>LogBoxControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogEvent.cs" />
-    <Compile Include="LogEventError.cs" />
-    <Compile Include="LogEventImage.cs" />
-    <Compile Include="LogEventInfo.cs" />
-    <Compile Include="LogEventWarning.cs" />
+    <Compile Include="LogEvents\LogEvent.cs" />
+    <Compile Include="LogEvents\LogEventError.cs" />
+    <Compile Include="LogEvents\LogEventImage.cs" />
+    <Compile Include="LogEvents\LogEventInfo.cs" />
+    <Compile Include="LogEvents\LogEventWarning.cs" />
     <Compile Include="LogTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -109,6 +107,7 @@ copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="ZoomBorder.xaml.cs">
       <DependentUpon>ZoomBorder.xaml</DependentUpon>
     </Compile>
@@ -136,36 +135,7 @@ copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Error.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Info.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Warning.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Clear.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Image.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Scrollbar_16x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

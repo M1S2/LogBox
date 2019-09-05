@@ -9,13 +9,13 @@
       <Path>/LogBox/Properties/AssemblyInfo.cs</Path>
     </VersionFile>
     <VersionFile>
+      <Path>/LogBoxTest/Properties/AssemblyInfo.cs</Path>
+    </VersionFile>
+    <VersionFile>
       <Path>/README.md</Path>
     </VersionFile>
     <VersionFile>
       <Path>/CHANGELOG.md</Path>
-    </VersionFile>
-    <VersionFile>
-      <Path>\LogBox\LogBox.nuspec</Path>
     </VersionFile>
   </VersionFiles>
   <BinaryObjects>

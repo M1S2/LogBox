@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogBox
+namespace LogBox.LogEvents
 {
     /// <summary>
     /// Log event error

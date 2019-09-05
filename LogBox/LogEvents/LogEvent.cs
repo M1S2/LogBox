@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogBox
+namespace LogBox.LogEvents
 {
+    /// <summary>
+    /// Abstract base class for log events
+    /// </summary>
     public abstract class LogEvent
     {
         /// <summary>

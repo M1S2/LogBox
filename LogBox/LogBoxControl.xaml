@@ -37,14 +37,14 @@
             <iconPacks:PackIconEntypo Width="30" Height="30" Kind="CircleWithCross" Foreground="Red" VerticalAlignment="Center"/>
             <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show errors" IsChecked="{Binding ShowErrors}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-            <iconPacks:PackIconModern Width="30" Height="30" Kind="Image" Foreground="Gray" VerticalAlignment="Center"/>
-            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
+            <iconPacks:PackIconModern Width="30" Height="30" Kind="Image" Foreground="Gray" VerticalAlignment="Center" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel="" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <iconPacks:PackIconFontAwesome Width="30" Height="30" Kind="ArrowsAltVSolid" Foreground="Gray" VerticalAlignment="Center" />
                 <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Auto scroll to last log entry" IsChecked="{Binding AutoScrollToLastLogEntry}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-                <Button x:Name="btn_clearLog" Width="35" Height="35" Margin="2,2,10,2" Click="btn_clearLog_Click" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                <Button x:Name="btn_clearLog" Width="35" Height="35" Margin="2,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                     <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="Gray" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
@@ -56,7 +56,7 @@
                 <local:ColumnDefinitionExtended Width="Auto" Visible="{Binding IsSelectedLogEventTypeImage}"/>
             </Grid.ColumnDefinitions>
 
-            <GridSplitter ResizeDirection="Columns" Grid.Column="1" Width="5" Margin="5,0,5,0" ShowsPreview="False" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="#FFB2B2B2" />
+            <GridSplitter ResizeDirection="Columns" Grid.Column="1" Width="5" Margin="5,0,5,0" ShowsPreview="False" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="{DynamicResource GrayBrush3}" />
 
             <ListView x:Name="listView_Log" Grid.Column="0" SelectedItem="{Binding SelectedLogEvent, Mode=TwoWay}" VirtualizingPanel.IsVirtualizing="True">
                 <ListView.View>
@@ -80,7 +80,6 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Message" Width="Auto">
-                            <!-- Width="{Binding ElementName=listView_Log, Path=ActualWidth, Converter={local:SubtractConverter}, ConverterParameter=165}">-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding LogMessage}"/>
@@ -91,7 +90,7 @@
                 </ListView.View>
             </ListView>
 
-            <local:ZoomBorder Grid.Column="1" Margin="15,0,0,0" BorderBrush="#FFB2B2B2" BorderThickness="1" ClipToBounds="True">
+            <local:ZoomBorder Grid.Column="1" Margin="15,0,0,0" BorderBrush="{DynamicResource GrayBrush3}" BorderThickness="1" ClipToBounds="True">
                 <Image Source="{Binding LogImageProperty, Converter={StaticResource BitmapConverter}}"/>
             </local:ZoomBorder>
         </Grid>

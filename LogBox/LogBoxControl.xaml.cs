@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using LogBox.LogEvents;
 
 namespace LogBox
 {
@@ -91,7 +92,7 @@ namespace LogBox
             {
                 _showInfos = value;
                 NotifyPropertyChanged();
-                CollectionViewSource.GetDefaultView(listView_Log.ItemsSource).Refresh();
+                CollectionViewSource.GetDefaultView(LogEvents).Refresh();
             }
         }
 
@@ -106,7 +107,7 @@ namespace LogBox
             {
                 _showWarnings = value;
                 NotifyPropertyChanged();
-                CollectionViewSource.GetDefaultView(listView_Log.ItemsSource).Refresh();
+                CollectionViewSource.GetDefaultView(LogEvents).Refresh();
             }
         }
 
@@ -121,7 +122,7 @@ namespace LogBox
             {
                 _showErrors = value;
                 NotifyPropertyChanged();
-                CollectionViewSource.GetDefaultView(listView_Log.ItemsSource).Refresh();
+                CollectionViewSource.GetDefaultView(LogEvents).Refresh();
             }
         }
 
@@ -136,8 +137,18 @@ namespace LogBox
             {
                 _showImageLogs = value;
                 NotifyPropertyChanged();
-                CollectionViewSource.GetDefaultView(listView_Log.ItemsSource).Refresh();
+                CollectionViewSource.GetDefaultView(LogEvents).Refresh();
             }
+        }
+
+        private bool _enableImageLogs;
+        /// <summary>
+        /// Enable or disable the possibility to log images
+        /// </summary>
+        public bool EnableImageLogs
+        {
+            get { return _enableImageLogs; }
+            set { _enableImageLogs = value; NotifyPropertyChanged(); ShowImageLogs = _enableImageLogs; }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -153,7 +164,7 @@ namespace LogBox
             {
                 _autoScrollToLastLogEntry = value;
                 NotifyPropertyChanged();
-                ScrollToLastLogEvent();
+                if (_autoScrollToLastLogEntry) { ScrollToLastLogEvent(); }
             }
         }
 
@@ -166,21 +177,33 @@ namespace LogBox
             LogEvents = new ObservableCollection<LogEvent>();
 
             listView_Log.ItemsSource = LogEvents;
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listView_Log.ItemsSource);
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(LogEvents);
             view.Filter = filterListViewItems;
 
             ShowInfos = true;
             ShowWarnings = true;
             ShowErrors = true;
-            ShowImageLogs = true;
+            ShowImageLogs = false;
+            EnableImageLogs = false;
             AutoScrollToLastLogEntry = true;
         }
 
         //***********************************************************************************************************************************************************************************************************
 
-        private void btn_clearLog_Click(object sender, RoutedEventArgs e)
+        private ICommand _clearLogCommand;
+        /// <summary>
+        /// Command to clear all log entries
+        /// </summary>
+        public ICommand ClearLogCommand
         {
-            ClearLog();
+            get
+            {
+                if (_clearLogCommand == null)
+                {
+                    _clearLogCommand = new RelayCommand(param => ClearLog());
+                }
+                return _clearLogCommand;
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -222,8 +245,11 @@ namespace LogBox
         /// <param name="image">image of log entry</param>
         public void LogImage(string imageMessage, Bitmap image)
         {
-            LogEventImage logEvent = new LogEventImage(imageMessage, image);
-            LogEvent(logEvent);
+            if (EnableImageLogs)
+            {
+                LogEventImage logEvent = new LogEventImage(imageMessage, image);
+                LogEvent(logEvent);
+            }
         }
 
         /// <summary>
@@ -232,8 +258,11 @@ namespace LogBox
         /// <param name="logEvent">log event</param>
         public void LogEvent(LogEvent logEvent)
         {
-            LogEvents.Add(logEvent);
-            if (AutoScrollToLastLogEntry) { ScrollToLastLogEvent(); }
+            if (logEvent.LogType != LogTypes.IMAGE || (logEvent.LogType == LogTypes.IMAGE && EnableImageLogs))
+            {
+                LogEvents.Add(logEvent);
+                if (AutoScrollToLastLogEntry) { ScrollToLastLogEvent(); }
+            }
         }
 
         /// <summary>
@@ -272,7 +301,7 @@ namespace LogBox
         private bool filterListViewItems(object item)
         {
             LogEvent log = (LogEvent)item;
-            return (ShowInfos == true && log.LogType == LogTypes.INFO) || (ShowWarnings == true && log.LogType == LogTypes.WARNING) || (ShowErrors == true && log.LogType == LogTypes.ERROR) || (ShowImageLogs == true && log.LogType == LogTypes.IMAGE);
+            return (ShowInfos == true && log.LogType == LogTypes.INFO) || (ShowWarnings == true && log.LogType == LogTypes.WARNING) || (ShowErrors == true && log.LogType == LogTypes.ERROR) || (EnableImageLogs == true && ShowImageLogs == true && log.LogType == LogTypes.IMAGE);
         }
 
         //***********************************************************************************************************************************************************************************************************

@@ -9,8 +9,8 @@
         mc:Ignorable="d"
         Title="Test LogBox" Height="450" Width="700"
         Icon="Resources/LogIcon.ico">
-    
+
     <Grid>
-        <logBox:LogBoxControl x:Name="logBoxCtrl" Margin="5"/>
+        <logBox:LogBoxControl x:Name="logBoxCtrl" Margin="5" EnableImageLogs="True"/>
     </Grid>
 </MetroControls:MetroWindow>

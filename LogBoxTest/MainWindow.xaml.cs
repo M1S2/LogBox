@@ -24,18 +24,18 @@ namespace LogBoxTest
         public MainWindow()
         {
             InitializeComponent();
-            logBoxCtrl.LogEvent(new LogBox.LogEventInfo("Info log message"));
-            logBoxCtrl.LogEvent(new LogBox.LogEventWarning("Warning log message"));
-            logBoxCtrl.LogEvent(new LogBox.LogEventError("Error log message"));
-            
+            logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventInfo("Info log message"));
+            logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventWarning("Warning log message"));
+            logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventError("Error log message"));
+
             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(100, 100);
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
             g.Clear(System.Drawing.Color.Green);
-            logBoxCtrl.LogEvent(new LogBox.LogEventImage("Image log message", bmp));
+            logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventImage("Image log message", bmp));
 
             for (int i = 0; i < 20; i++)
             {
-                logBoxCtrl.LogEvent(new LogBox.LogEventInfo("Info log #" + i.ToString()));
+                logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventInfo("Info log #" + i.ToString()));
             }
         }
     }

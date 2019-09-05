@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace LogBox
+namespace LogBox.LogEvents
 {
     /// <summary>
     /// Log event image

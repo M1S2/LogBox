@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogBox
+namespace LogBox.LogEvents
 {
     /// <summary>
-    /// Log event warning
+    /// Log event info
     /// </summary>
-    public class LogEventWarning : LogEvent
+    public class LogEventInfo : LogEvent
     {
         /// <summary>
-        /// Constructor of LogEventWarning
+        /// Constructor of LogEventInfo
         /// </summary>
         /// <param name="logMessage">Message of log entry</param>
-        public LogEventWarning(string logMessage) : base(LogTypes.WARNING, logMessage)
+        public LogEventInfo(string logMessage) : base(LogTypes.INFO, logMessage)
         {
         }
     }
