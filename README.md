@@ -1,8 +1,7 @@
 # LogBox
 
-Version: %version%
-
 [![nuget](https://img.shields.io/nuget/v/LogBox.svg)](https://www.nuget.org/packages/LogBox/)
+![GitHub](https://img.shields.io/github/license/M1S2/LogBox)
 
 A WPF control to display log events.
 
@@ -35,7 +34,7 @@ Insert the control with:
 <logBox:LogBoxControl x:Name="logBoxCtrl" EnableImageLogs="True"/>
 ```
 
-To add log entries use the controls `LogEvent` method like:
+To add log entries use the controls `LogEvent()` method like:
 ```C#
 LogBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventInfo("Info log message"));
 ```

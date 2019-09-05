@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/M1S2/LogBox/raw/master/AppIcon/LogIcon.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A WPF control to display log events.</description>
-    <releaseNotes>Release v$version$</releaseNotes>
+    <releaseNotes>Use this version with Metro styled WPF applications (using MahApps.Metro).</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>log debug wpf control</tags>
   </metadata>
