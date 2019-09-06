@@ -1,7 +1,9 @@
 # LogBox
 
-[![nuget](https://img.shields.io/nuget/v/LogBox.svg)](https://www.nuget.org/packages/LogBox/)
-[![GitHub](https://img.shields.io/github/license/M1S2/LogBox)](LICENSE.md)
+[![Nuget Version](https://img.shields.io/nuget/v/LogBox.svg)](https://www.nuget.org/packages/LogBox/)
+[![GitHub Release Version](https://img.shields.io/github/v/release/M1S2/LogBox)](https://github.com/M1S2/LogBox/releases)
+[![GitHub License](https://img.shields.io/github/license/M1S2/LogBox)](LICENSE.md)
+![Nuget Downloads](https://img.shields.io/nuget/dt/LogBox)
 
 A WPF control to display log events.
 
@@ -36,7 +38,7 @@ Insert the control with:
 
 To add log entries use the controls `LogEvent()` method like:
 ```C#
-LogBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventInfo("Info log message"));
+logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventInfo("Info log message"));
 ```
 
 For further examples see the LogBoxTest project.
