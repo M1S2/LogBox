@@ -85,6 +85,7 @@ copy "$(SolutionDir)CHANGELOG.md" "$(TargetDir)CHANGELOG.md"</PostBuildEvent>
     <Compile Include="ColumnDefinitionExtended.cs" />
     <Compile Include="Converters\BitmapToImageSourceConverter.cs" />
     <Compile Include="Converters\LogTypesToIconGeometryConverter.cs" />
+    <Compile Include="FocusExtension.cs" />
     <Compile Include="LogBoxControl.xaml.cs">
       <DependentUpon>LogBoxControl.xaml</DependentUpon>
     </Compile>

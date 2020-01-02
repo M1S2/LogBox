@@ -170,6 +170,38 @@ namespace LogBox
 
         //***********************************************************************************************************************************************************************************************************
 
+        private bool _isSearchEnabled;
+        /// <summary>
+        /// Is Search enabled
+        /// </summary>
+        public bool IsSearchEnabled
+        {
+            get { return _isSearchEnabled; }
+            set
+            {
+                _isSearchEnabled = value;
+                NotifyPropertyChanged();
+                CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+            }
+        }
+
+        private string _searchText;
+        /// <summary>
+        /// Search text
+        /// </summary>
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                NotifyPropertyChanged();
+                CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+            }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
         public LogBoxControl()
         {
             InitializeComponent();
@@ -301,7 +333,9 @@ namespace LogBox
         private bool filterListViewItems(object item)
         {
             LogEvent log = (LogEvent)item;
-            return (ShowInfos == true && log.LogType == LogTypes.INFO) || (ShowWarnings == true && log.LogType == LogTypes.WARNING) || (ShowErrors == true && log.LogType == LogTypes.ERROR) || (EnableImageLogs == true && ShowImageLogs == true && log.LogType == LogTypes.IMAGE);
+            bool logTypeVisible = (ShowInfos == true && log.LogType == LogTypes.INFO) || (ShowWarnings == true && log.LogType == LogTypes.WARNING) || (ShowErrors == true && log.LogType == LogTypes.ERROR) || (EnableImageLogs == true && ShowImageLogs == true && log.LogType == LogTypes.IMAGE);
+            bool logMessageVisible = (!IsSearchEnabled || string.IsNullOrEmpty(SearchText)) ? true : (log.LogMessage.Contains(SearchText) || log.LogTime.ToString().Contains(SearchText));
+            return logTypeVisible && logMessageVisible;
         }
 
         //***********************************************************************************************************************************************************************************************************

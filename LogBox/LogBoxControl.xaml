@@ -17,6 +17,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ToggleSwitch.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -41,11 +42,16 @@
             <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel="" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <iconPacks:PackIconFontAwesome Width="30" Height="30" Kind="ArrowsAltVSolid" Foreground="Gray" VerticalAlignment="Center" />
+                <iconPacks:PackIconFontAwesome Width="30" Height="30" Kind="ArrowsAltVSolid" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center" />
                 <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Auto scroll to last log entry" IsChecked="{Binding AutoScrollToLastLogEntry}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
+                <TextBox Width="150" VerticalAlignment="Center" VerticalContentAlignment="Center" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MetroControls:TextBoxHelper.ClearTextButton="True" MetroControls:TextBoxHelper.UseFloatingWatermark="True" MetroControls:TextBoxHelper.Watermark="Search..." Visibility="{Binding IsSearchEnabled, Converter={StaticResource BoolVisibilityConverter}}" local:FocusExtension.IsFocused="{Binding IsSearchEnabled}"/>
+                <ToggleButton Margin="3,0,10,0" Width="35" Height="35" ToolTip="Search" IsChecked="{Binding IsSearchEnabled, Mode=TwoWay}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleToggleButtonStyle}">
+                    <iconPacks:PackIconOcticons Width="20" Height="20" Kind="Search" VerticalAlignment="Center"/>
+                </ToggleButton>
+
                 <Button x:Name="btn_clearLog" Width="35" Height="35" Margin="2,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="Gray" VerticalAlignment="Center"/>
+                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
         </DockPanel>
