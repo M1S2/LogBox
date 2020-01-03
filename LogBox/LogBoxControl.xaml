@@ -40,6 +40,8 @@
             <iconPacks:PackIconModern Width="30" Height="30" Kind="Image" Foreground="Gray" VerticalAlignment="Center" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
             <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel="" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
 
+            <TextBlock Margin="15,0,0,0" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource GrayBrush3}" Text="{Binding ElementName=listView_Log, Path=Items.Count, StringFormat=# Logs: {0}}"/>
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <iconPacks:PackIconFontAwesome Width="30" Height="30" Kind="ArrowsAltVSolid" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center" />
                 <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Auto scroll to last log entry" IsChecked="{Binding AutoScrollToLastLogEntry}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>

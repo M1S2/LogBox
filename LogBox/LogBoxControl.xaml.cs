@@ -324,9 +324,15 @@ namespace LogBox
         /// <summary>
         /// Clear all log entries
         /// </summary>
-        public void ClearLog()
+        public async void ClearLog()
         {
-            LogEvents.Clear();
+            MetroWindow parentWindow = FindParent<MetroWindow>(this);
+            MessageDialogResult dialogResult = await parentWindow.ShowMessageAsync("Clear log", "Do you really want to clear all log entries.", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Clear", NegativeButtonText = "Cancel" });
+
+            if (dialogResult == MessageDialogResult.Affirmative)
+            {
+                LogEvents.Clear();
+            }
         }
 
         /// <summary>
