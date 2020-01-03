@@ -17,6 +17,8 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using LogBox.LogEvents;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace LogBox
 {
@@ -202,6 +204,10 @@ namespace LogBox
 
         //***********************************************************************************************************************************************************************************************************
 
+        private string _lastLogDirectory;
+
+        //***********************************************************************************************************************************************************************************************************
+
         public LogBoxControl()
         {
             InitializeComponent();
@@ -218,6 +224,8 @@ namespace LogBox
             ShowImageLogs = false;
             EnableImageLogs = false;
             AutoScrollToLastLogEntry = true;
+
+            _lastLogDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -235,6 +243,22 @@ namespace LogBox
                     _clearLogCommand = new RelayCommand(param => ClearLog());
                 }
                 return _clearLogCommand;
+            }
+        }
+
+        private ICommand _saveLogCommand;
+        /// <summary>
+        /// Command to save all log entries
+        /// </summary>
+        public ICommand SaveLogCommand
+        {
+            get
+            {
+                if (_saveLogCommand == null)
+                {
+                    _saveLogCommand = new RelayCommand(param => SaveLog());
+                }
+                return _saveLogCommand;
             }
         }
 
@@ -323,6 +347,34 @@ namespace LogBox
             listView_Log.ScrollIntoView(LogEvents.Last());
         }
 
+        /// <summary>
+        /// Save all log entries
+        /// </summary>
+        public async void SaveLog()
+        {
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.Title = "Save log";
+            saveFileDialog.DefaultExt = ".log";
+            saveFileDialog.Filter = "Log file (*.log)|*.log|Text file (*.txt)|*.txt";
+            saveFileDialog.InitialDirectory = _lastLogDirectory;
+            
+            if(saveFileDialog.ShowDialog().Value)
+            {
+                string logString = "Date/Time           |  Type   |  Message " + Environment.NewLine +
+                                   "------------------- | ------- | ---------------------------------" + Environment.NewLine;
+
+                foreach (LogEvent logEvent in listView_Log.Items)
+                {
+                    logString += logEvent.LogTime.ToString() + " | " + String.Format("{0,-7}", logEvent.LogType.ToString()) + " | " + logEvent.LogMessage + Environment.NewLine;
+                }
+                System.IO.File.WriteAllText(saveFileDialog.FileName, logString);
+                _lastLogDirectory = System.IO.Path.GetDirectoryName(saveFileDialog.FileName);
+
+                MetroWindow parentWindow = FindParent<MetroWindow>(this);
+                await parentWindow.ShowMessageAsync("Log saved", "Log was successfully saved to" + Environment.NewLine + "\"" + saveFileDialog.FileName + "\"", MessageDialogStyle.Affirmative);
+            }
+        }
+
         //***********************************************************************************************************************************************************************************************************
 
         /// <summary>
@@ -336,6 +388,29 @@ namespace LogBox
             bool logTypeVisible = (ShowInfos == true && log.LogType == LogTypes.INFO) || (ShowWarnings == true && log.LogType == LogTypes.WARNING) || (ShowErrors == true && log.LogType == LogTypes.ERROR) || (EnableImageLogs == true && ShowImageLogs == true && log.LogType == LogTypes.IMAGE);
             bool logMessageVisible = (!IsSearchEnabled || string.IsNullOrEmpty(SearchText)) ? true : (log.LogMessage.Contains(SearchText) || log.LogTime.ToString().Contains(SearchText));
             return logTypeVisible && logMessageVisible;
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        /// <summary>
+        /// Find the parent to the given child with a specific type
+        /// </summary>
+        /// <typeparam name="T">Type of the parent to find</typeparam>
+        /// <param name="child">Child to search the parent for</param>
+        /// <returns>parent with the specific type</returns>
+        /// see: https://social.msdn.microsoft.com/Forums/vstudio/en-US/c47754bd-38c7-40b3-b64a-38a48884fde8/how-to-find-a-parent-of-a-specific-type?forum=wpf
+        private T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parentObj = VisualTreeHelper.GetParent(child);
+            T parent = parentObj as T;
+            if (parent != null)
+            {
+                return parent;
+            }
+            else
+            {
+                return FindParent<T>(parentObj);
+            }
         }
 
         //***********************************************************************************************************************************************************************************************************

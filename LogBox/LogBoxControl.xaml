@@ -17,7 +17,6 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ToggleSwitch.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -50,7 +49,11 @@
                     <iconPacks:PackIconOcticons Width="20" Height="20" Kind="Search" VerticalAlignment="Center"/>
                 </ToggleButton>
 
-                <Button x:Name="btn_clearLog" Width="35" Height="35" Margin="2,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                <Button Width="35" Height="35" Margin="2,2,10,2" Command="{Binding SaveLogCommand}" ToolTip="Save all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center"/>
+                </Button>
+                
+                <Button Width="35" Height="35" Margin="2,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                     <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
