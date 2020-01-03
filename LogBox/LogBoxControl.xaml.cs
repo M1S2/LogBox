@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using LogBox.LogEvents;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -95,6 +96,7 @@ namespace LogBox
                 _showInfos = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+                HighlightAllListViewItems();
             }
         }
 
@@ -110,6 +112,7 @@ namespace LogBox
                 _showWarnings = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+                HighlightAllListViewItems();
             }
         }
 
@@ -125,6 +128,7 @@ namespace LogBox
                 _showErrors = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+                HighlightAllListViewItems();
             }
         }
 
@@ -140,6 +144,7 @@ namespace LogBox
                 _showImageLogs = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+                HighlightAllListViewItems();
             }
         }
 
@@ -184,6 +189,7 @@ namespace LogBox
                 _isSearchEnabled = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+                HighlightAllListViewItems();
             }
         }
 
@@ -199,6 +205,7 @@ namespace LogBox
                 _searchText = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
+                HighlightAllListViewItems();
             }
         }
 
@@ -392,7 +399,7 @@ namespace LogBox
         {
             LogEvent log = (LogEvent)item;
             bool logTypeVisible = (ShowInfos == true && log.LogType == LogTypes.INFO) || (ShowWarnings == true && log.LogType == LogTypes.WARNING) || (ShowErrors == true && log.LogType == LogTypes.ERROR) || (EnableImageLogs == true && ShowImageLogs == true && log.LogType == LogTypes.IMAGE);
-            bool logMessageVisible = (!IsSearchEnabled || string.IsNullOrEmpty(SearchText)) ? true : (log.LogMessage.Contains(SearchText) || log.LogTime.ToString().Contains(SearchText));
+            bool logMessageVisible = (!IsSearchEnabled || string.IsNullOrEmpty(SearchText)) ? true : (log.LogMessage.ToLower().Contains(SearchText.ToLower()) || log.LogTime.ToString().ToLower().Contains(SearchText.ToLower()));
             return logTypeVisible && logMessageVisible;
         }
 
@@ -419,22 +426,94 @@ namespace LogBox
             }
         }
 
+        /// <summary>
+        /// Find all children with a specific type
+        /// </summary>
+        /// <typeparam name="T">Type of the children to find</typeparam>
+        /// <param name="depObj">Parent to search the children for</param>
+        /// <returns>List of children with specific type</returns>
+        /// see: https://stackoverflow.com/questions/974598/find-all-controls-in-wpf-window-by-type
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
         //***********************************************************************************************************************************************************************************************************
+        
+        /// <summary>
+        /// Find all ListViewItems and call the HighlightText method for each
+        /// </summary>
+        private void HighlightAllListViewItems()
+        {
+            listView_Log.UpdateLayout();
+            foreach (ListViewItem lvi in FindVisualChildren<ListViewItem>(listView_Log))
+            {
+                HighlightText(lvi, IsSearchEnabled ? SearchText : "");
+            }
+        }
 
         /// <summary>
-        /// Autosize the columns of the listView
+        /// Find all TextBlocks and highlight the given text
         /// </summary>
-        /// see: https://dotnet-snippets.de/snippet/automatische-anpassung-der-breite-von-gridviewcolumns/1286
-        private void resizeListViewColumns(ListView listView)
+        /// <param name="itx">Object that is used to highlight</param>
+        /// <param name="highlightText">Text to highlight</param>
+        /// see: https://social.msdn.microsoft.com/Forums/sqlserver/en-US/3f157426-6673-4548-89b9-e4681f7c96ea/how-to-highlight-part-of-a-text-in-a-listview-item?forum=wpf
+        /// see: https://www.codeproject.com/Articles/103259/Highlight-Searched-Text-in-WPF-ListView
+        private void HighlightText(DependencyObject itx, string highlightText)
         {
-            GridView gridView = listView.View as GridView;
-            if (gridView == null) { return; }
-
-            foreach (GridViewColumn column in gridView.Columns)
+            if (itx != null)
             {
-                if (column.Header.ToString() == "Message") { continue; }
-                column.Width = column.ActualWidth;
-                column.Width = double.NaN;
+                if (itx is TextBlock)
+                {
+                    Regex regex = new Regex("(" + highlightText + ")", RegexOptions.IgnoreCase);
+                    TextBlock tb = itx as TextBlock;
+                    if (string.IsNullOrEmpty(highlightText))
+                    {
+                        string str = tb.Text;
+                        tb.Inlines.Clear();
+                        tb.Inlines.Add(str);
+                        return;
+                    }
+                    string[] substrings = regex.Split(tb.Text);
+                    tb.Inlines.Clear();
+                    foreach (var item in substrings)
+                    {
+                        if (regex.Match(item).Success)
+                        {
+                            Run runx = new Run(item);
+                            runx.FontWeight = FontWeights.Bold;
+                            runx.FontSize += 2;
+                            tb.Inlines.Add(runx);
+                        }
+                        else
+                        {
+                            tb.Inlines.Add(item);
+                        }
+                    }
+                    return;
+                }
+                else
+                {
+                    for (int i = 0; i < VisualTreeHelper.GetChildrenCount(itx as DependencyObject); i++)
+                    {
+                        HighlightText(VisualTreeHelper.GetChild(itx as DependencyObject, i), highlightText);
+                    }
+                }
             }
         }
     }
