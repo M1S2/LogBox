@@ -1,6 +1,6 @@
 # LogBox
 
-## [%version%] - %date%
+## [v2.1.0] - 04.01.2020 16:05
 
 **Use this version with Metro styled WPF applications (using MahApps.Metro).**
 
