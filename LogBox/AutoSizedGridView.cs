@@ -21,7 +21,7 @@ namespace LogBox
                 // If the width is NaN, first set it to ActualWidth temporarily.
                 if (double.IsNaN(column.Width)) { column.Width = column.ActualWidth; }
 
-                // Finally, set the column with to NaN. This raises the property change event and re computes the width.
+                // Finally, set the column width to NaN. This raises the property change event and re computes the width.
                 column.Width = double.NaN;
             }
             base.PrepareItem(item);

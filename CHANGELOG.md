@@ -2,6 +2,11 @@
 
 ## [%version%] - %date%
 
+**Use this version with Metro styled WPF applications (using MahApps.Metro).**
+
+- Search box added
+- Save button added
+- Show number of log entries
 
 ## [v2.0.0] - 05.09.2019 21:40
 

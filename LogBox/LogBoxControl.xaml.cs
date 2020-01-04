@@ -211,7 +211,7 @@ namespace LogBox
 
         //***********************************************************************************************************************************************************************************************************
 
-        private string _lastLogDirectory;
+        private string _lastLogPath;
 
         //***********************************************************************************************************************************************************************************************************
 
@@ -232,7 +232,7 @@ namespace LogBox
             EnableImageLogs = false;
             AutoScrollToLastLogEntry = true;
 
-            _lastLogDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            _lastLogPath = System.AppDomain.CurrentDomain.BaseDirectory + "logFile.log";
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -369,7 +369,8 @@ namespace LogBox
             saveFileDialog.Title = "Save log";
             saveFileDialog.DefaultExt = ".log";
             saveFileDialog.Filter = "Log file (*.log)|*.log|Text file (*.txt)|*.txt";
-            saveFileDialog.InitialDirectory = _lastLogDirectory;
+            saveFileDialog.InitialDirectory = System.IO.Path.GetDirectoryName(_lastLogPath);
+            saveFileDialog.FileName = System.IO.Path.GetFileName(_lastLogPath);
             
             if(saveFileDialog.ShowDialog().Value)
             {
@@ -381,7 +382,7 @@ namespace LogBox
                     logString += logEvent.LogTime.ToString() + " | " + String.Format("{0,-7}", logEvent.LogType.ToString()) + " | " + logEvent.LogMessage + Environment.NewLine;
                 }
                 System.IO.File.WriteAllText(saveFileDialog.FileName, logString);
-                _lastLogDirectory = System.IO.Path.GetDirectoryName(saveFileDialog.FileName);
+                _lastLogPath = saveFileDialog.FileName;
 
                 MetroWindow parentWindow = FindParent<MetroWindow>(this);
                 await parentWindow.ShowMessageAsync("Log saved", "Log was successfully saved to" + Environment.NewLine + "\"" + saveFileDialog.FileName + "\"", MessageDialogStyle.Affirmative);

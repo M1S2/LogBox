@@ -19,23 +19,24 @@ namespace LogBox
         {
             string iconDataStr = null;
             Brush foregroundBrush = null;
+            Brush strokeBrush = null;
 
             switch ((LogTypes)value)
             {
                 case LogTypes.INFO:
-                    iconDataStr = (new PackIconModern() { Kind = PackIconModernKind.InformationCircle }).Data; foregroundBrush = new SolidColorBrush(Colors.Blue); break;
+                    iconDataStr = (new PackIconModern() { Kind = PackIconModernKind.InformationCircle }).Data; foregroundBrush = new SolidColorBrush(Colors.Blue); strokeBrush = new SolidColorBrush(Colors.LightBlue); break;
                 case LogTypes.WARNING:
-                    iconDataStr = (new PackIconModern() { Kind = PackIconModernKind.Warning }).Data; foregroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFE4E44C")); break;
+                    iconDataStr = (new PackIconModern() { Kind = PackIconModernKind.Warning }).Data; foregroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFE4E44C")); strokeBrush = new SolidColorBrush(Colors.Orange); break;
                 case LogTypes.ERROR:
-                    iconDataStr = (new PackIconEntypo() { Kind =  PackIconEntypoKind.CircleWithCross }).Data; foregroundBrush = new SolidColorBrush(Colors.Red); break;
+                    iconDataStr = (new PackIconEntypo() { Kind =  PackIconEntypoKind.CircleWithCross }).Data; foregroundBrush = new SolidColorBrush(Colors.Red); strokeBrush = foregroundBrush; break;
                 case LogTypes.IMAGE:
-                    iconDataStr = (new PackIconModern() { Kind = PackIconModernKind.Image }).Data; foregroundBrush = new SolidColorBrush(Colors.Gray); break;
+                    iconDataStr = (new PackIconModern() { Kind = PackIconModernKind.Image }).Data; foregroundBrush = new SolidColorBrush(Colors.Gray); strokeBrush = foregroundBrush; break;
                 default:
                     return null;
             }
 
             Geometry iconGeometry = Geometry.Parse(iconDataStr);
-            GeometryDrawing iconGeometryDrawing = new GeometryDrawing(foregroundBrush, new Pen(foregroundBrush, 1), iconGeometry);
+            GeometryDrawing iconGeometryDrawing = new GeometryDrawing(foregroundBrush, new Pen(strokeBrush, 1), iconGeometry);
             return iconGeometryDrawing;
         }
 

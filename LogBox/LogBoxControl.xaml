@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:LogBox"
              xmlns:MetroControls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -28,16 +29,32 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <iconPacks:PackIconModern Width="30" Height="30" Kind="InformationCircle" Foreground="Blue" VerticalAlignment="Center"/>
+            <Image Width="32" Height="32">
+                <Image.Source>
+                    <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.INFO}, Converter={StaticResource IconConverter}}"/>
+                </Image.Source>
+            </Image>
             <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show infos" IsChecked="{Binding ShowInfos}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-            <iconPacks:PackIconModern Width="30" Height="30" Kind="Warning" Foreground="#FFE4E44C" VerticalAlignment="Center" BorderBrush="#FFE4E44C"/>
+            <Image Width="32" Height="32">
+                <Image.Source>
+                    <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.WARNING}, Converter={StaticResource IconConverter}}"/>
+                </Image.Source>
+            </Image>
             <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show warnings" IsChecked="{Binding ShowWarnings}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-            <iconPacks:PackIconEntypo Width="30" Height="30" Kind="CircleWithCross" Foreground="Red" VerticalAlignment="Center"/>
+            <Image Width="32" Height="32">
+                <Image.Source>
+                    <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.ERROR}, Converter={StaticResource IconConverter}}"/>
+                </Image.Source>
+            </Image>
             <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show errors" IsChecked="{Binding ShowErrors}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
 
-            <iconPacks:PackIconModern Width="30" Height="30" Kind="Image" Foreground="Gray" VerticalAlignment="Center" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
+            <Image Width="32" Height="32" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}">
+                <Image.Source>
+                    <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.IMAGE}, Converter={StaticResource IconConverter}}"/>
+                </Image.Source>
+            </Image>
             <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel="" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
 
             <TextBlock Margin="15,0,0,0" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource GrayBrush3}" Text="{Binding ElementName=listView_Log, Path=Items.Count, StringFormat=# Logs: {0}}"/>

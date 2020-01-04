@@ -7,6 +7,15 @@
 
 A WPF control to display log events.
 
+![LogBox screenshot](LogBoxTest/Screenshots/Screenshot_LogBox.png)
+
+## Installation
+Include the [latest release from nuget.org](https://www.nuget.org/packages/LogBox/) in your project.
+
+You can also use the Package Manager console with: `PM> Install-Package LogBox`
+
+## Usage
+
 Available types of log events are:
 
 | Type    | Description                                                            | 
@@ -16,16 +25,7 @@ Available types of log events are:
 | Error   | Use this to show errors.                                               |
 | Image   | Use this to display image to the user (for example for debug purpose). |
 
-## Screenshots
 
-![LogBox screenshot](LogBoxTest/Screenshots/Screenshot_LogBox.png)
-
-## Installation
-Include the [latest release from nuget.org](https://www.nuget.org/packages/LogBox/) in your project.
-
-You can also use the Package Manager console with: `PM> Install-Package LogBox`
-
-## Usage
 Include the following namespace in your .xaml:
 ```C#
 xmlns:logBox="clr-namespace:LogBox;assembly=LogBox"
