@@ -2,6 +2,9 @@
 
 ## [%version%] - %date%
 
+
+## [v2.1.1] - 14.01.2020 20:34
+
 **Use this version with Metro styled WPF applications (using MahApps.Metro).**
 
 - Performance Issue # 1 fixed
