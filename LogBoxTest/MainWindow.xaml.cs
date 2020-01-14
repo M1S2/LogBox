@@ -33,7 +33,7 @@ namespace LogBoxTest
             g.Clear(System.Drawing.Color.Green);
             logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventImage("Image log message", bmp));
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 9996; i++)
             {
                 logBoxCtrl.LogEvent(new LogBox.LogEvents.LogEventInfo("Info log #" + i.ToString()));
             }

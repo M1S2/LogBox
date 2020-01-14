@@ -96,7 +96,7 @@ namespace LogBox
                 _showInfos = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
-                HighlightAllListViewItems();
+                HighlightAllListViewItems(false);
             }
         }
 
@@ -112,7 +112,7 @@ namespace LogBox
                 _showWarnings = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
-                HighlightAllListViewItems();
+                HighlightAllListViewItems(false);
             }
         }
 
@@ -128,7 +128,7 @@ namespace LogBox
                 _showErrors = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
-                HighlightAllListViewItems();
+                HighlightAllListViewItems(false);
             }
         }
 
@@ -144,7 +144,7 @@ namespace LogBox
                 _showImageLogs = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
-                HighlightAllListViewItems();
+                HighlightAllListViewItems(false);
             }
         }
 
@@ -189,7 +189,7 @@ namespace LogBox
                 _isSearchEnabled = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
-                HighlightAllListViewItems();
+                HighlightAllListViewItems(false);
             }
         }
 
@@ -205,8 +205,33 @@ namespace LogBox
                 _searchText = value;
                 NotifyPropertyChanged();
                 CollectionViewSource.GetDefaultView(LogEvents).Refresh();
-                HighlightAllListViewItems();
+                HighlightAllListViewItems(false);
             }
+        }
+
+        //***********************************************************************************************************************************************************************************************************
+
+        private int _numSaveOperations = 0;
+        /// <summary>
+        /// Number of currently running save operations
+        /// </summary>
+        public int NumSaveOperations
+        {
+            get { return _numSaveOperations; }
+            set
+            {
+                _numSaveOperations = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged("IsSaving");
+            }
+        }
+        
+        /// <summary>
+        /// Is the log currently saving or not
+        /// </summary>
+        public bool IsSaving
+        {
+            get { return NumSaveOperations > 0; }
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -225,6 +250,9 @@ namespace LogBox
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(LogEvents);
             view.Filter = filterListViewItems;
 
+            // see: https://social.msdn.microsoft.com/Forums/vstudio/en-US/62482ae9-ddd0-4c89-b872-a80c7c367385/setting-scroll-scrollchanged-and-valuechanged-listview-event-handlers-programatically?forum=wpf
+            listView_Log.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(ListView_ScrollChanged));
+            
             ShowInfos = true;
             ShowWarnings = true;
             ShowErrors = true;
@@ -325,6 +353,7 @@ namespace LogBox
             {
                 LogEvents.Add(logEvent);
                 if (AutoScrollToLastLogEntry) { ScrollToLastLogEvent(); }
+                if (IsSearchEnabled) { HighlightAllListViewItems(true); }
             }
         }
 
@@ -356,8 +385,9 @@ namespace LogBox
         /// </summary>
         public void ScrollToLastLogEvent()
         {
-            if (LogEvents.Count == 0) { return; }
-            listView_Log.ScrollIntoView(LogEvents.Last());
+            //see: https://stackoverflow.com/questions/2337822/wpf-listbox-scroll-to-end-automatically
+            ScrollViewer scrollViewer = FindVisualChildren<ScrollViewer>(listView_Log).FirstOrDefault();
+            scrollViewer?.ScrollToBottom();
         }
 
         /// <summary>
@@ -365,28 +395,38 @@ namespace LogBox
         /// </summary>
         public async void SaveLog()
         {
+            NumSaveOperations++;
+
             Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
             saveFileDialog.Title = "Save log";
             saveFileDialog.DefaultExt = ".log";
             saveFileDialog.Filter = "Log file (*.log)|*.log|Text file (*.txt)|*.txt";
             saveFileDialog.InitialDirectory = System.IO.Path.GetDirectoryName(_lastLogPath);
             saveFileDialog.FileName = System.IO.Path.GetFileName(_lastLogPath);
-            
-            if(saveFileDialog.ShowDialog().Value)
-            {
-                string logString = "Date/Time           |  Type   |  Message " + Environment.NewLine +
-                                   "------------------- | ------- | ---------------------------------" + Environment.NewLine;
 
-                foreach (LogEvent logEvent in listView_Log.Items)
-                {
-                    logString += logEvent.LogTime.ToString() + " | " + String.Format("{0,-7}", logEvent.LogType.ToString()) + " | " + logEvent.LogMessage + Environment.NewLine;
-                }
-                System.IO.File.WriteAllText(saveFileDialog.FileName, logString);
+            if (saveFileDialog.ShowDialog().Value)
+            {
+                StringBuilder logString = new StringBuilder("Date/Time           |  Type   |  Message " + Environment.NewLine +
+                                                            "------------------- | ------- | ---------------------------------" + Environment.NewLine);
+
+                LogEvent[] logEvents = new LogEvent[listView_Log.Items.Count];
+                listView_Log.Items.CopyTo(logEvents, 0);
+
+                await Task.Run(() =>
+               {
+                   foreach (LogEvent logEvent in logEvents)
+                   {
+                       logString.Append(logEvent.LogTime.ToString() + " | " + String.Format("{0,-7}", logEvent.LogType.ToString()) + " | " + logEvent.LogMessage + Environment.NewLine);
+                   }
+                   System.IO.File.WriteAllText(saveFileDialog.FileName, logString.ToString());
+               });
                 _lastLogPath = saveFileDialog.FileName;
 
                 MetroWindow parentWindow = FindParent<MetroWindow>(this);
                 await parentWindow.ShowMessageAsync("Log saved", "Log was successfully saved to" + Environment.NewLine + "\"" + saveFileDialog.FileName + "\"", MessageDialogStyle.Affirmative);
             }
+
+            NumSaveOperations--;
         }
 
         //***********************************************************************************************************************************************************************************************************
@@ -455,16 +495,29 @@ namespace LogBox
         }
 
         //***********************************************************************************************************************************************************************************************************
-        
+
+        /// <summary>
+        /// Highlight all items that are scrolled into view (because of virtualization)
+        /// </summary>
+        void ListView_ScrollChanged(object sender, RoutedEventArgs e)
+        {
+            HighlightAllListViewItems(true);
+        }
+
         /// <summary>
         /// Find all ListViewItems and call the HighlightText method for each
         /// </summary>
-        private void HighlightAllListViewItems()
+        /// <param name="isScrolling">Was the highlight function called while scrolling or not</param>
+        private void HighlightAllListViewItems(bool isScrolling)
         {
             listView_Log.UpdateLayout();
             foreach (ListViewItem lvi in FindVisualChildren<ListViewItem>(listView_Log))
             {
-                HighlightText(lvi, IsSearchEnabled ? SearchText : "");
+                if (!isScrolling || (isScrolling && (lvi.Tag == null || (bool)lvi.Tag == false)))       // if scrolling, only highlight new items (created by virtualization, Tag == null)
+                {
+                    HighlightText(lvi, IsSearchEnabled ? SearchText : "");
+                    lvi.Tag = true;
+                }
             }
         }
 

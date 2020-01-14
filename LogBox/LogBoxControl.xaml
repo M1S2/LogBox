@@ -68,11 +68,12 @@
                     <iconPacks:PackIconOcticons Width="20" Height="20" Kind="Search" VerticalAlignment="Center"/>
                 </ToggleButton>
 
-                <Button Width="35" Height="35" Margin="2,2,10,2" Command="{Binding SaveLogCommand}" ToolTip="Save all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                <Button Width="35" Height="35" Margin="2,2,2,2" Command="{Binding SaveLogCommand}" ToolTip="Save all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                     <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center"/>
                 </Button>
-                
-                <Button Width="35" Height="35" Margin="2,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                <MetroControls:ProgressRing Margin="0,0,10,0" Height="20" Width="20" Visibility="{Binding IsSaving, Converter={StaticResource BoolVisibilityConverter}}"/>
+
+                <Button Width="35" Height="35" Margin="10,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                     <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
@@ -86,7 +87,8 @@
 
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" Width="5" Margin="5,0,5,0" ShowsPreview="False" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="{DynamicResource GrayBrush3}" />
 
-            <ListView x:Name="listView_Log" Grid.Column="0" SelectedItem="{Binding SelectedLogEvent, Mode=TwoWay}" VirtualizingPanel.IsVirtualizing="True">
+            <!-- https://stackoverflow.com/questions/4563856/slow-wpf-itemscontrol-refresh-on-listcollectionview -->
+            <ListView x:Name="listView_Log" Grid.Column="0" SelectedItem="{Binding SelectedLogEvent, Mode=TwoWay}" VirtualizingPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True">
                 <ListView.View>
                     <local:AutoSizedGridView>
                         <GridViewColumn Header="" Width="40">
