@@ -15,10 +15,6 @@
             <local:LogTypesToIconGeometryConverter x:Key="IconConverter"/>
             <local:BitmapToImageSourceConverter x:Key="BitmapConverter"/>
             <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter"/>
-
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ToggleSwitch.xaml" />
-            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -34,47 +30,56 @@
                     <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.INFO}, Converter={StaticResource IconConverter}}"/>
                 </Image.Source>
             </Image>
-            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show infos" IsChecked="{Binding ShowInfos}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" Width="55" ToolTip="Show infos" IsOn="{Binding ShowInfos}" VerticalAlignment="Center" OnContent="" OffContent=""/>
 
             <Image Width="32" Height="32">
                 <Image.Source>
                     <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.WARNING}, Converter={StaticResource IconConverter}}"/>
                 </Image.Source>
             </Image>
-            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show warnings" IsChecked="{Binding ShowWarnings}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" Width="55" ToolTip="Show warnings" IsOn="{Binding ShowWarnings}" VerticalAlignment="Center" OnContent="" OffContent=""/>
 
             <Image Width="32" Height="32">
                 <Image.Source>
                     <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.ERROR}, Converter={StaticResource IconConverter}}"/>
                 </Image.Source>
             </Image>
-            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show errors" IsChecked="{Binding ShowErrors}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" Width="55" ToolTip="Show errors" IsOn="{Binding ShowErrors}" VerticalAlignment="Center" OnContent="" OffContent=""/>
 
             <Image Width="32" Height="32" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}">
                 <Image.Source>
                     <DrawingImage Drawing="{Binding Source={x:Static local:LogTypes.IMAGE}, Converter={StaticResource IconConverter}}"/>
                 </Image.Source>
             </Image>
-            <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Show image logs" IsChecked="{Binding ShowImageLogs}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel="" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
+            <MetroControls:ToggleSwitch Margin="5,0,10,0" Width="55" ToolTip="Show image logs" IsOn="{Binding ShowImageLogs}" VerticalAlignment="Center" OnContent="" OffContent="" Visibility="{Binding EnableImageLogs, Converter={StaticResource BoolVisibilityConverter}}"/>
 
-            <TextBlock Margin="15,0,0,0" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource GrayBrush3}" Text="{Binding ElementName=listView_Log, Path=Items.Count, StringFormat=# Logs: {0}}"/>
+            <TextBlock Margin="15,0,0,0" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource MahApps.Brushes.Gray3}" Text="{Binding ElementName=listView_Log, Path=Items.Count, StringFormat=# Logs: {0}}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <iconPacks:PackIconFontAwesome Width="30" Height="30" Kind="ArrowsAltVSolid" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center" />
-                <MetroControls:ToggleSwitch Margin="5,0,10,0" ToolTip="Auto scroll to last log entry" IsChecked="{Binding AutoScrollToLastLogEntry}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" VerticalAlignment="Center" OnLabel="" OffLabel=""/>
+                <iconPacks:PackIconOcticons Width="30" Height="30" Kind="ArrowBoth" Foreground="{DynamicResource MahApps.Brushes.Gray3}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+                    <iconPacks:PackIconOcticons.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="90"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </iconPacks:PackIconOcticons.RenderTransform>
+                </iconPacks:PackIconOcticons>
+                <MetroControls:ToggleSwitch Margin="5,0,10,0" Width="55" ToolTip="Auto scroll to last log entry" IsOn="{Binding AutoScrollToLastLogEntry}" VerticalAlignment="Center" OnContent="" OffContent=""/>
 
                 <TextBox Width="150" VerticalAlignment="Center" VerticalContentAlignment="Center" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MetroControls:TextBoxHelper.ClearTextButton="True" MetroControls:TextBoxHelper.UseFloatingWatermark="True" MetroControls:TextBoxHelper.Watermark="Search..." Visibility="{Binding IsSearchEnabled, Converter={StaticResource BoolVisibilityConverter}}" local:FocusExtension.IsFocused="{Binding IsSearchEnabled}"/>
-                <ToggleButton Margin="3,0,10,0" Width="35" Height="35" ToolTip="Search" IsChecked="{Binding IsSearchEnabled, Mode=TwoWay}" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleToggleButtonStyle}">
+                <ToggleButton Margin="3,0,10,0" Width="35" Height="35" ToolTip="Search" IsChecked="{Binding IsSearchEnabled, Mode=TwoWay}" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}">
                     <iconPacks:PackIconOcticons Width="20" Height="20" Kind="Search" VerticalAlignment="Center"/>
                 </ToggleButton>
 
-                <Button Width="35" Height="35" Margin="2,2,2,2" Command="{Binding SaveLogCommand}" ToolTip="Save all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center"/>
+                <Button Width="35" Height="35" Margin="2,2,2,2" Command="{Binding SaveLogCommand}" ToolTip="Save all log entries" Style="{StaticResource MahApps.Styles.Button.Circle}">
+                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Save" Foreground="{DynamicResource MahApps.Brushes.Gray3}" VerticalAlignment="Center"/>
                 </Button>
                 <MetroControls:ProgressRing Margin="0,0,10,0" Height="20" Width="20" Visibility="{Binding IsSaving, Converter={StaticResource BoolVisibilityConverter}}"/>
 
-                <Button Width="35" Height="35" Margin="10,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="{DynamicResource GrayBrush3}" VerticalAlignment="Center"/>
+                <Button Width="35" Height="35" Margin="10,2,10,2" Command="{Binding ClearLogCommand}" ToolTip="Clear all log entries" Style="{StaticResource MahApps.Styles.Button.Circle}">
+                    <iconPacks:PackIconModern Width="20" Height="20" Kind="Clean" Foreground="{DynamicResource MahApps.Brushes.Gray3}" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
         </DockPanel>
@@ -85,7 +90,7 @@
                 <local:ColumnDefinitionExtended Width="Auto" Visible="{Binding IsSelectedLogEventTypeImage}"/>
             </Grid.ColumnDefinitions>
 
-            <GridSplitter ResizeDirection="Columns" Grid.Column="1" Width="5" Margin="5,0,5,0" ShowsPreview="False" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="{DynamicResource GrayBrush3}" />
+            <GridSplitter ResizeDirection="Columns" Grid.Column="1" Width="5" Margin="5,0,5,0" ShowsPreview="False" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="{DynamicResource MahApps.Brushes.Gray3}" />
 
             <!-- https://stackoverflow.com/questions/4563856/slow-wpf-itemscontrol-refresh-on-listcollectionview -->
             <ListView x:Name="listView_Log" Grid.Column="0" SelectedItem="{Binding SelectedLogEvent, Mode=TwoWay}" VirtualizingPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True">
@@ -120,7 +125,7 @@
                 </ListView.View>
             </ListView>
 
-            <local:ZoomBorder Grid.Column="1" Margin="15,0,0,0" BorderBrush="{DynamicResource GrayBrush3}" BorderThickness="1" ClipToBounds="True">
+            <local:ZoomBorder Grid.Column="1" Margin="15,0,0,0" BorderBrush="{DynamicResource MahApps.Brushes.Gray3}" BorderThickness="1" ClipToBounds="True">
                 <Image Source="{Binding LogImageProperty, Converter={StaticResource BitmapConverter}}"/>
             </local:ZoomBorder>
         </Grid>

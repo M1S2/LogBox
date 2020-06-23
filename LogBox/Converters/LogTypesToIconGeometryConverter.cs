@@ -41,7 +41,7 @@ namespace LogBox
                     backgroundRectGeometry = new RectangleGeometry(new System.Windows.Rect(33, 20, 10, 34));
                     break;
                 case LogTypes.ERROR:
-                    iconDataStr = (new PackIconEntypo() { Kind = PackIconEntypoKind.CircleWithCross }).Data;
+                    iconDataStr = (new PackIconMaterial() { Kind = PackIconMaterialKind.CloseCircle }).Data;
                     foregroundBrush = new SolidColorBrush(Colors.Red);
                     strokeBrush = new SolidColorBrush(Colors.OrangeRed);
                     backgroundRectBrush = new SolidColorBrush(Colors.White);

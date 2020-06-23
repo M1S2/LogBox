@@ -2,6 +2,7 @@
 
 ## [%version%] - %date%
 
+- Updated MahApps.Metro to v2.0.1 and MahApps.Metro.IconPacks to v4.2.0
 
 ## [v2.1.1] - 14.01.2020 20:34
 
